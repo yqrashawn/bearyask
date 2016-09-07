@@ -1,0 +1,10 @@
+[
+  {
+    "routs":{
+      "zhoubao":{
+        "get": "zhoubao",
+        "post":"post uir"
+      }
+    }
+  }
+]
