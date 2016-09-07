@@ -13,7 +13,7 @@ router.post('/ask', function(req, res) {
 
 router.get('/ask', function(req, res) {
   res.render('index', { title: 'Express' });
-  console.log(req);
+  console.log(req.body);
 });
 
 
