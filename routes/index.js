@@ -11,6 +11,11 @@ router.post('/ask', function(req, res) {
   console.log(req);
 });
 
+router.get('/ask', function(req, res) {
+  res.render('index', { title: 'Express' });
+  console.log(req);
+});
+
 
 
 
