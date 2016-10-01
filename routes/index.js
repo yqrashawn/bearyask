@@ -9,6 +9,7 @@ router.post('/ask', function (req, res) {
   const userInputText = req.body.text;
 
   try {
+    console.log(userInputText);
     // multiple choice
     if (handleReport.ifInit(userInputText)) {
       res.send(reportConfig.report.template);
