@@ -23,14 +23,6 @@ router.post('/ask', function (req, res) {
         title: '周报',
         text: '周六 已完成任务[  ],未完成任务[  ],原因及对策[  ]\n周日 已完成任务[  ],未完成任务[  ],原因及对策[  ]\n',
         color: '#666666',
-        images: [
-          {
-            url: 'http://example.com/index.jpg',
-          },
-          {
-            url: 'http://example.com/index.jpg',
-          },
-        ],
       },
     ],
   });
