@@ -40,7 +40,7 @@ class HandleReport {
     if (option === undefined) {
       let flag = false;
       triggers.forEach((trigger, i) => {
-        if (!S(str).startsWith(trigger)) {
+        if (S(str).startsWith(trigger)) {
           flag = true;
         }
       });

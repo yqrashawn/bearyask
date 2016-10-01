@@ -23,8 +23,8 @@ const reportConfig = {
     brakets: 27,
   },
   trigger: {
-    init: [`${trigger} 周报`, `${trigger} zhoubao`, `${trigger} z`],
-    update: [`${trigger} 复制的时候请连我一起复制`],
+    init: [`${trigger}周报`, `${trigger}zhoubao`, `${trigger}z`],
+    update: [`${trigger}复制的时候请连我一起复制`],
   },
 };
 module.exports = reportConfig;
