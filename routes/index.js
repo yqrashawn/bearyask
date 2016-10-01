@@ -23,21 +23,23 @@ router.post('/ask', function (req, res) {
           console.log(err);
         } else if (!report) {
           console.log('new user');
-          const template = reportConfig.report.template;
+          const template = JSON.parse(JSON.stringify(reportConfig.report.template));
           template.attachments[0].text = template.attachments[0].text.replace(/\[\d+\]/g, '[   ]');
           res.send(template);
         } else {
-          res.send(handleReport.inputJson(report));
+          res.send(handleReport.inputJson({
+            userName: report.userName,
+            arr: report.arr,
+          }));
         }
       });
     } else if (handleReport.ifUpdate(userInputText)) {
       handleReport.renderJSON(userInputText, user, channel, (err) => {
         if (!err) {
-          const template = reportConfig.report.template;
-          template.attachments[0].text = '保存成功';
-          res.sendStatus(template);
-        }else{
-         res.send(err);
+          res.send(reportConfig.report.successTemplate);
+          // res.sendStatus(200);
+        } else {
+          res.send(err);
         }
       });
     }

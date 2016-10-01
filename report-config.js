@@ -21,6 +21,14 @@ const reportConfig = {
         ],
       },
     brakets: 27,
+    successTemplate: {
+            text: '###保存成功',
+            attachments: [
+              {
+                title: `:grnning:`,
+              },
+            ],
+          },
   },
   trigger: {
     init: [`${trigger}周报`, `${trigger}zhoubao`, `${trigger}z`],

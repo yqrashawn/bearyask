@@ -105,7 +105,8 @@ class HandleReport {
   }
 
   static inputJson(reportJson) {
-    const template = config.report.template;
+    const template = JSON.parse(JSON.stringify(config.report.template));
+    console.log(template);
     template.attachments[0].text =  template.attachments[0].text.replace(/\d+/g, (match) => {
         return reportJson.arr[match - 1].toString();
       });
