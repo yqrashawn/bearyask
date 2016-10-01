@@ -1,5 +1,6 @@
 const config = require('../report-config.js');
 const S = require('string');
+const mongoose = require('mongoose');
 
 class HandleReport {
   /**
@@ -48,10 +49,70 @@ class HandleReport {
     }
   }
 
-  static renderJSON(str){
+  /**
+   * handle the respond template, get value in bracket, save in db as array
+   *
+   * @access public
+   * @static
+   * @param {String} str template from res
+   * @returns {Object} json for data saving
+   */
+  static renderJSON(str, user, channel, callback) {
+    this.user = user;
+    this.channel = channel;
     let arr = S(str).splitLeft(',');
-    console.log(arr);
+    let valueArr = [];
+    arr.forEach((bracketStr, i) => {
+      let str = S(bracketStr).between('[', ']').s;
+      if (!str.length) {
+        str = ' ';
+      }
+
+      valueArr.push(str);
+    });
+    const query = { userName: user };
+    this.Reports.findOneAndUpdate(query, {
+      userName: user,
+      arr: valueArr,
+    }, {
+      new: true,
+      upsert: true,
+    }, (err, report) => {
+      callback(err);
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  static initDb() {
+    mongoose.connect('mongodb://127.0.0.1:27017/weekly-report');
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    const reportSchema = mongoose.Schema({
+      userName: String,
+      arr: Array,
+    });
+    this.Reports = mongoose.model('Reports', reportSchema);
+  }
+
+  static initCSVTemplate() {
+
+  }
+
+  static renderCSV(reportJson) {
+
+  }
+
+  static inputJson(reportJson) {
+    const template = config.report.template;
+    template.attachments[0].text =  template.attachments[0].text.replace(/\d+/g, (match) => {
+        return reportJson.arr[match - 1].toString();
+      });
+    console.log(template.attachments[0].text);
+    return template;
   }
 }
 
+HandleReport.initDb();
 module.exports = HandleReport;

@@ -7,14 +7,37 @@ const router = express.Router();
 // GET home page.
 router.post('/ask', function (req, res) {
   const userInputText = req.body.text;
+  const user = req.body.user_name;
+  const channel = req.body.channel_name;
 
   try {
-    console.log(userInputText);
     // multiple choice
     if (handleReport.ifInit(userInputText)) {
-      res.send(reportConfig.report.template);
+      const query = { userName: user };
+      if (!handleReport.Reports) {
+        handleReport.init();
+      }
+
+      handleReport.Reports.findOne(query, (err, report) => {
+        if (err) {
+          console.log(err);
+        } else if (!report) {
+          console.log('new user');
+          const template = reportConfig.report.template;
+          template.attachments[0].text = template.attachments[0].text.replace(/\[\d+\]/g, '[   ]');
+          res.send(template);
+        } else {
+          res.send(handleReport.inputJson(report));
+        }
+      });
     } else if (handleReport.ifUpdate(userInputText)) {
-      handleReport.renderJSON(userInputText);
+      handleReport.renderJSON(userInputText, user, channel, (err) => {
+        if (!err) {
+          res.sendStatus(200);
+        }else{
+         res.send(err);
+        }
+      });
     }
   } catch (e) {
     console.trace(e);
