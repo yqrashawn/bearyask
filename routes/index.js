@@ -33,7 +33,9 @@ router.post('/ask', function (req, res) {
     } else if (handleReport.ifUpdate(userInputText)) {
       handleReport.renderJSON(userInputText, user, channel, (err) => {
         if (!err) {
-          res.sendStatus(200);
+          const template = reportConfig.template;
+          template.attachments[0].text = '保存成功';
+          res.sendStatus(template);
         }else{
          res.send(err);
         }
