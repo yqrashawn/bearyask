@@ -11,7 +11,7 @@ class HandleReport {
    * @returns {Bool} true if is one of the preset init triggers
    */
   static ifInit(str) {
-    return this.ifIsTrigger(str, config.reprot.trigger.init);
+    return this.ifIsTrigger(str, config.trigger.init);
   }
 
   /**
@@ -23,7 +23,7 @@ class HandleReport {
    * @returns {Bool} true if is one of the preset update triggers
    */
   static ifUpdate(str) {
-    return this.ifIsTrigger(str, config.reprot.trigger.update);
+    return this.ifIsTrigger(str, config.trigger.update);
   }
 
   /**
@@ -40,7 +40,7 @@ class HandleReport {
     if (option === undefined) {
       let flag = false;
       triggers.forEach((trigger, i) => {
-        if (!S(userIputText).startsWith(trigger)) {
+        if (!S(str).startsWith(trigger)) {
           flag = true;
         }
       });
@@ -53,3 +53,5 @@ class HandleReport {
     console.log(arr);
   }
 }
+
+module.exports = HandleReport;

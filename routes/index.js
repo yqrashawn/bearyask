@@ -8,11 +8,15 @@ const router = express.Router();
 router.post('/ask', function (req, res) {
   const userInputText = req.body.text;
 
-  // multiple choice
-  if (handleReport.ifInit(userInputText)) {
-    res.send(reportConfig.report.template);
-  } else if (handleReport.ifUpdate(userInputText)) {
-    handleReport.renderJSON(userInputText);
+  try {
+    // multiple choice
+    if (handleReport.ifInit(userInputText)) {
+      res.send(reportConfig.report.template);
+    } else if (handleReport.ifUpdate(userInputText)) {
+      handleReport.renderJSON(userInputText);
+    }
+  } catch (e) {
+    console.trace(e);
   }
 });
 
