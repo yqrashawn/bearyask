@@ -149,7 +149,9 @@ class HandleReport {
     this[model].find({}, (err, reports) => {
       if (!err && reports.length) {
         callback(reports);
-      } else {throw Error(err);};
+      } else {
+        throw Error(err);
+      }
     });
   }
 
