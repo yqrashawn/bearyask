@@ -1,10 +1,10 @@
+/* eslint indent:["error",2] */
 const trigger = '!!! ';
 const reportConfig = {
   report: {
     template: {
         text: '###请复制下面的模板到输入框,填写[ ]再次发送即可',
-        attachments: [
-          {
+        attachments: [{
             title: `${trigger} 复制的时候请连我一起复制`,
             text: '周六 已完成任务[1],未完成任务[2],原因及对策[3],\n\
                   周日 已完成任务[4],未完成任务[5],原因及对策[6],\n\
@@ -23,16 +23,40 @@ const reportConfig = {
     brakets: 27,
     successTemplate: {
             text: '###保存成功',
-            attachments: [
-              {
-                title: `:grnning:`,
+          },
+    csvTemplate:
+      '时间,已完成任务,未完成任务,原因及对策\n\
+       周日,[1],[2],[3]\n\
+       周六,[4],[5],[6]\n\
+       周一,[7],[8],[9]\n\
+       周二,[10],[11],[12]\n\
+       周三,[13],[14],[15]\n\
+       周四,[16],[17],[18]\n\
+       周五,[19],[20],[21]\n\
+       周六,[22],[23],[24]\n\
+       周日,[25],[26],[27]\n\
+       部门负责人简评:,                           ,,\n\
+       总监评分:,□A(优秀)□B(良好)□C(及格)□D(不合格),目标达成率       %,\n\
+       报告提交人:[28],部门:[29],日期:[30],',
+    initUserInfoTemplate: {
+            text: '###初始化信息',
+            attachments: [{
+                title: `${trigger} 复制本块内容到回复框,填写[  ]内的内容后回车即可&`,
+                text: `姓名:[1],&部门:[2],&周报要发送给谁(请输入邮件地址,多个用','号隔开):[3],&若要抄送给自己,请填写自己的邮箱地址:[4]`,
               },
             ],
           },
   },
   trigger: {
-    init: [`${trigger}周报`, `${trigger}zhoubao`, `${trigger}z`],
+    init: [`${trigger}初始化`, `${trigger}init`],
+    deliver: [`${trigger}周报`, `${trigger}zhoubao`, `${trigger}z`],
     update: [`${trigger}复制的时候请连我一起复制`],
+    saveInit: [`${trigger} 复制本块内容到回复框,填写`],
   },
+  schedule: {
+    deliver: '0 17 30 * * 5',
+    clean: '0 17 30 * * 7',
+  },
+  fileDir: `${__dirname}/public/download/`,
 };
 module.exports = reportConfig;
