@@ -150,7 +150,7 @@ class HandleReport {
       if (!err && reports.length) {
         callback(reports);
       } else {
-        throw new Error(err);
+        console.log(err);
       }
     });
   }
