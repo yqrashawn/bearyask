@@ -1,3 +1,4 @@
+/* eslint consistent-return:['off'] no-else-return:['off'] max-len:['error',400] indent:['off',2] new-cap:['off'] no-unused-vars:['off'] no-console:['off']*/
 const schedule = require('node-schedule');
 const handleReport = require('./routes/handleReport.js');
 const reportConfig = require('./report-config.js');
@@ -19,7 +20,7 @@ const poolConfig = {
     connectionTimeout: 200000,
   };
 const transporter = nodemailer.createTransport(poolConfig);
-transporter.verify(function (error, success) {
+transporter.verify((error, success) => {
   if (error) {
     console.log(error);
   } else {
@@ -29,17 +30,17 @@ transporter.verify(function (error, success) {
 
 class Schedule {
   static startSchedule() {
-    // const sch = schedule.scheduleJob(reportConfig.schedule.deliver, () => {
-    const sch = schedule.scheduleJob('1 * * * * *', () => {
+    const sch = schedule.scheduleJob(reportConfig.schedule.deliver, () => {
+      // const sch = schedule.scheduleJob('1 * * * * *', () => { // for test, per sec
       handleReport.initCSVTemplate(() => {
         const output = fs.createWriteStream('./public/Reports.zip');
         const archive = archiver('zip');
         output.on('close', () => {
-            console.log(archive.pointer() + ' total bytes');
+            console.log(`${archive.pointer()} total bytes`);
             console.log('archiver has been finalized and the output file descriptor has closed.');
           });
 
-        archive.on('error', function (err) {
+        archive.on('error', (err) => {
             throw Error(err);
           });
 
@@ -48,8 +49,14 @@ class Schedule {
             { expand: true, cwd: reportConfig.fileDir, src: ['**'], dest: 'Reports' },
         ]);
         archive.finalize();
-        // TODO: distribute
         this.readAllfileAndEmail();
+        mongoose.connection.collections.reports.drop((err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('collection droped');
+          }
+        });
       });
     });
   }
@@ -68,13 +75,13 @@ class Schedule {
         });
         to = S(to).chompRight(',').s;
         const message = {
-          text: ``,
+          text: '',
           from: '"yqrashawn" <yqrashawn@gmail.com>',
           to,
           cc: users[userName].cc,
           subject: `${users[userName].name}的周报`,
           attachments: [
-            { filename: filename, path: `./public/download/${filename}`, contentType: 'text/csv' },
+            { filename, path: `./public/download/${filename}`, contentType: 'text/csv' },
           ],
         };
         transporter.sendMail(message, (error, info) => {
@@ -82,19 +89,12 @@ class Schedule {
               return console.log(error);
             }
 
-            console.log('Message sent: ' + info.response);
+            console.log(`Message sent:   ${info.response}`);
           });
       }
     });
   }
 }
 
-// mongoose.connection.collections['reports'].drop((err) => {
-// if (err) {
-// console.log(err);
-// }else{
-// console.log('collection droped');
-// }
-// });
 module.exports = Schedule;
 Schedule.startSchedule();

@@ -1,4 +1,4 @@
-/* eslint no-else-return:['off'] max-len:['error',400] indent:['error',2] new-cap:['off'] no-unused-vars:['off'] no-console:['off']*/
+/* eslint no-else-return:['off'] max-len:['error',400] indent:['off',2] new-cap:['off'] no-unused-vars:['off'] no-console:['off']*/
 const config = require('../report-config.js');
 const S = require('string');
 const mongoose = require('mongoose');
@@ -120,7 +120,7 @@ class HandleReport {
         reports.forEach((report, i) => {
           let csv = JSON.parse(JSON.stringify(config.report.csvTemplate));
           csv = csv.replace(/\[\d+\]/g, (match) => {
-            let index = S(match).between('[', ']').s;
+            const index = S(match).between('[', ']').s;
             if (index === '28') {
               return usersObj[report.userName].name;
             }
@@ -153,10 +153,6 @@ class HandleReport {
         console.log(err);
       }
     });
-  }
-
-  static renderCSV(reportJson) {
-
   }
 
   /**

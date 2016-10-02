@@ -1,4 +1,4 @@
-/* eslint indent:["error",2] */
+/* eslint indent:["off",2] no-multi-str:['off'] */
 const trigger = '!!! ';
 const reportConfig = {
   report: {
@@ -42,7 +42,7 @@ const reportConfig = {
             text: '###初始化信息',
             attachments: [{
                 title: `${trigger} 复制本块内容到回复框,填写[  ]内的内容后回车即可&`,
-                text: `姓名:[1],&部门:[2],&周报要发送给谁(请输入邮件地址,多个用','号隔开):[3],&若要抄送给自己,请填写自己的邮箱地址:[4]`,
+                text: '姓名:[1],&部门:[2],&周报要发送给谁(请输入邮件地址,多个用","号隔开):[3],&若要抄送给自己,请填写自己的邮箱地址:[4]',
               },
             ],
           },

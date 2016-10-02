@@ -5,6 +5,7 @@ const handleReport = require('./handleReport.js');
 require('../schedule.js');
 
 const router = express.Router();
+
 // GET home page.
 router.post('/ask', (req, res) => {
   const userInputText = req.body.text;
