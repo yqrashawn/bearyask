@@ -30,27 +30,28 @@ transporter.verify(function (error, success) {
 class Schedule {
   static startSchedule() {
     // const sch = schedule.scheduleJob(reportConfig.schedule.deliver, () => {
-    handleReport.initCSVTemplate(() => {
-      const output = fs.createWriteStream('./public/Reports.zip');
-      const archive = archiver('zip');
-      output.on('close', () => {
-          console.log(archive.pointer() + ' total bytes');
-          console.log('archiver has been finalized and the output file descriptor has closed.');
-        });
+    const sch = schedule.scheduleJob(1 * * * * *), () => {
+      handleReport.initCSVTemplate(() => {
+        const output = fs.createWriteStream('./public/Reports.zip');
+        const archive = archiver('zip');
+        output.on('close', () => {
+            console.log(archive.pointer() + ' total bytes');
+            console.log('archiver has been finalized and the output file descriptor has closed.');
+          });
 
-      archive.on('error', function (err) {
-          throw Error(err);
-        });
+        archive.on('error', function (err) {
+            throw Error(err);
+          });
 
-      archive.pipe(output);
-      archive.bulk([
-          { expand: true, cwd: reportConfig.fileDir, src: ['**'], dest: 'Reports' },
-      ]);
-      archive.finalize();
-      // TODO: distribute
-      this.readAllfileAndEmail();
+        archive.pipe(output);
+        archive.bulk([
+            { expand: true, cwd: reportConfig.fileDir, src: ['**'], dest: 'Reports' },
+        ]);
+        archive.finalize();
+        // TODO: distribute
+        this.readAllfileAndEmail();
+      });
     });
-    // });
   }
 
   static readAllfileAndEmail(callback) {
@@ -72,7 +73,7 @@ class Schedule {
           cc: users[userName].cc,
           subject: `${users[userName].name}的周报`,
           attachments: [
-            { filename:filename, path: `./public/download/${filename}`, contentType: 'text/csv' },
+            { filename: filename, path: `./public/download/${filename}`, contentType: 'text/csv' },
           ],
         };
         transporter.sendMail(message, (error, info) => {
