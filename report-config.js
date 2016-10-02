@@ -51,7 +51,7 @@ const reportConfig = {
     init: [`${trigger}初始化`, `${trigger}init`],
     deliver: [`${trigger}周报`, `${trigger}zhoubao`, `${trigger}z`],
     update: [`${trigger}复制的时候请连我一起复制`],
-    saveInit: [`${trigger} 复制本块内容到回复框,填写`],
+    saveInit: [`${trigger}复制本块内容到回复框,填写`],
   },
   schedule: {
     deliver: '0 17 30 * * 5',

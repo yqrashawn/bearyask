@@ -14,7 +14,7 @@ const poolConfig = {
     secure: false, // use SSL
     auth: {
         user: 'namy.19@hotmail.com',
-        pass: '',
+        pass: 'namy0000',
       },
     connectionTimeout: 200000,
   };
@@ -30,7 +30,7 @@ transporter.verify(function (error, success) {
 class Schedule {
   static startSchedule() {
     // const sch = schedule.scheduleJob(reportConfig.schedule.deliver, () => {
-    const sch = schedule.scheduleJob(1 * * * * *), () => {
+    const sch = schedule.scheduleJob('1 * * * * *', () => {
       handleReport.initCSVTemplate(() => {
         const output = fs.createWriteStream('./public/Reports.zip');
         const archive = archiver('zip');
@@ -60,6 +60,7 @@ class Schedule {
     console.log(files);
     files.forEach((filename) => {
       if (filename !== '.DS_Store') {
+        console.log(filename);
         const userName = S(filename).chompRight('.csv').s;
         let to = '';
         users[userName].to.forEach((email) => {
