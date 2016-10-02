@@ -114,8 +114,10 @@ class HandleReport {
       users.forEach((user) => {
         usersObj[user.userName] = user;
       });
+      this.usersObj = usersObj;
+      console.log(usersObj);
       this.findAllInDb('Reports', (reports) => {
-        reports.forEach((report,i) => {
+        reports.forEach((report, i) => {
           let csv = JSON.parse(JSON.stringify(config.report.csvTemplate));
           csv = csv.replace(/\[\d+\]/g, (match) => {
             let index = S(match).between('[', ']').s;
@@ -134,7 +136,7 @@ class HandleReport {
 
             return report.arr[index - 1].toString();
           });
-          fs.writeFileSync(`${config.fileDir}${S(usersObj[report.userName].name).strip(' ').s}.csv`, csv);
+          fs.writeFileSync(`${config.fileDir}${S(report.userName).strip(' ').s}.csv`, csv);
           if (i === reports.length - 1 && callback) {
             callback();
           }
@@ -147,7 +149,7 @@ class HandleReport {
     this[model].find({}, (err, reports) => {
       if (!err && reports.length) {
         callback(reports);
-      } else {throw err;};
+      } else {throw Error(err);};
     });
   }
 
@@ -232,16 +234,19 @@ class HandleReport {
     });
     if (valueArr[3]) {
       const emailsArr = S(valueArr[3]).splitLeft(',');
+      emailsArr.forEach((email, index) => {
+        emailsArr[index] = S(email).strip(' ').s;
+      });
       valueArr[3] = emailsArr;
       if (!emailsArr.length) {
         throw Error('no email address entered');
       }
     }
 
-    const name = valueArr[1];
-    const department = valueArr[2];
+    const name = S(valueArr[1]).strip(' ').s;
+    const department = S(valueArr[2]).strip(' ').s;
     const to = valueArr[3];
-    const cc = valueArr[4]; // may is undefined
+    const cc = valueArr[4] ? S(valueArr[4]).strip(' ').s : valueArr[4]; // may is undefined
     const query = { userName: user };
     this.Users.findOneAndUpdate(query, {
       userName: user,
