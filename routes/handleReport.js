@@ -188,6 +188,7 @@ class HandleReport {
       if (user) {
         const initTemplate = JSON.parse(JSON.stringify(config.report.initUserInfoTemplate));
         initTemplate.attachments[0].text = initTemplate.attachments[0].text.replace(/\d+/g, (match) => {
+            console.log(Object.keys(user)[match - 1]);
             if (Object.keys(user)[match - 1] instanceof Array) {
               let str = '';
               Object.keys(user)[match - 1].forEach((email, i) => {
