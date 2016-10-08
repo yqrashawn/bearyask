@@ -192,7 +192,7 @@ class HandleReport {
             console.log(match);
             if (newUser[match - 1] instanceof Array) {
               let str = '';
-              Object.keys(user)[match - 1].forEach((email, i) => {
+              newUser[match - 1].forEach((email, i) => {
                 str += `${email},`;
               });
               return str;
