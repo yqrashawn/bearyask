@@ -186,18 +186,18 @@ class HandleReport {
     };
     this.Users.findOne(query, (err, user) => {
       if (user) {
+        const newUser = [user.userName, user.department, user.to, user.cc];
         const initTemplate = JSON.parse(JSON.stringify(config.report.initUserInfoTemplate));
         initTemplate.attachments[0].text = initTemplate.attachments[0].text.replace(/\d+/g, (match) => {
-            console.log(user);
-            console.log('!!!!!!!!!!!!');
-            if (Object.keys(user)[match - 1] instanceof Array) {
+            console.log(match);
+            if (newUser[match - 1] instanceof Array) {
               let str = '';
               Object.keys(user)[match - 1].forEach((email, i) => {
                 str += `${email},`;
               });
               return str;
             } else {
-              return Object.keys(user)[match - 1].toString();
+              return newUser[match - 1].toString();
             }
           });
         if (callback) {
